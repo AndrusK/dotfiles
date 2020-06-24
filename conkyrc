@@ -1,0 +1,72 @@
+conky.config = {
+	background = true,
+	use_xft = true,
+	font = 'Ubuntu:pixelsize=14',
+	xftalpha = 0.5,
+	update_interval = 1,
+	total_run_times = 0,
+	own_window = true,
+	own_window_type = 'normal',
+	own_window_transparent = true,
+	own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+	double_buffer = true,
+	minimum_width = 260, minimum_height = 5,
+	maximum_width = 350,
+	draw_shades = false,
+	draw_outline = false,
+	draw_borders = false,
+	draw_graph_borders = false,
+	default_color = 'grey',
+	default_shade_color = 'red',
+	default_outline_color = 'green',
+	alignment = 'top_right',
+	gap_x = 14,
+	gap_y = 48,
+	no_buffers = true,
+	uppercase = false,
+	cpu_avg_samples = 2,
+	override_utf8_locale = false
+
+};
+
+conky.text = [[
+System Info ${hr 2 }
+
+${color #55aaff}Hostname:$color$alignr$nodename$color
+${color #55aaff}Kernel:$color$alignr$sysname $kernel on $machine
+${color #55aaff}Uptime:$alignr$color $uptime ${color lightgrey}${color #55aaff}
+Load:$color$alignr$loadavg${color lightgrey}
+
+${color #55aaff}CPU:$alignr${color lightgrey}${execi 1000 cat /proc/cpuinfo | grep 'model name' | sed -e 's/model name.*: //'| uniq | awk '{print substr($0,18,9)}'} @ ${freq_g} GHz
+${color #55aaff}CPU Utilisation:$color$alignr ${cpu cpu0}%
+${color #55aaff}CPU Temp:$color$alignr${execi 2 sensors | grep "Core 0" | cut -c 17-20} C
+${cpubar cpu0}
+${cpugraph 000000 ffffff}
+
+Core 1: ${cpubar cpu1 6,160}$alignr${cpu cpu1}%
+Core 2: ${cpubar cpu2 6,160}$alignr${cpu cpu2}%
+Core 3: ${cpubar cpu3 6,160}$alignr${cpu cpu3}%
+Core 4: ${cpubar cpu4 6,160}$alignr${cpu cpu4}%
+
+
+Memory ${hr 2}
+
+MEM $alignc $mem / $memmax $alignr $memperc%
+$membar
+
+Top Processes ${hr 2}
+$processes processes
+
+NAME             		${alignr} PID   CPU  MEM
+${top name 1} $alignr ${top pid 1} ${top cpu 1} ${top mem 1}
+${top name 2} $alignr ${top pid 2} ${top cpu 2} ${top mem 2}
+${top name 3} $alignr ${top pid 3} ${top cpu 3} ${top mem 3}
+${top name 4} $alignr ${top pid 4} ${top cpu 4} ${top mem 4}
+${top name 5} $alignr ${top pid 5} ${top cpu 5} ${top mem 5}
+
+wlan0 ${hr 2}
+Up:          ${upspeed wlan0}
+Down:    ${downspeed wlan0}
+
+
+]];
